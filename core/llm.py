@@ -41,7 +41,7 @@ class ProviderProfile:
 
 PROFILES: dict[str, ProviderProfile] = {
     "none": ProviderProfile("none", "", "", False, "不开启大模型，仅使用本地 RAG 摘要。"),
-    "deepseek": ProviderProfile("deepseek", "https://api.deepseek.com", "deepseek-v4-flash", True, "DeepSeek OpenAI-compatible Chat API。"),
+    "deepseek": ProviderProfile("deepseek", "https://api.deepseek.com", "deepseek-flash", True, "DeepSeek OpenAI-compatible Chat API。"),
     "qwen": ProviderProfile("qwen", "https://dashscope.aliyuncs.com/compatible-mode/v1", "qwen-plus", True, "阿里云百炼/通义千问 OpenAI 兼容接口。"),
     "ollama": ProviderProfile("ollama", "http://localhost:11434/v1", "qwen3:8b", False, "Ollama 本地 OpenAI 兼容接口，API Key 会被忽略。"),
     "openai_compatible": ProviderProfile("openai_compatible", "", "", True, "任意兼容 OpenAI /chat/completions 的服务。"),
