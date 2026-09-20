@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import base64
+import json
 import re
 from dataclasses import dataclass
 from typing import Any
-import requests
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 from .retriever import assess_evidence
 from .config import (
@@ -109,6 +111,44 @@ def llm_status() -> str:
     return "未启用大模型接口，当前使用本地 RAG 摘要模式；填写 .env 后可启用 DeepSeek、通义千问、Ollama 或其他 OpenAI 兼容模型。"
 
 
+def _safe_error_detail(value: str) -> str:
+    """Keep provider errors useful without echoing a configured API key."""
+    detail = value.replace(LLM_API_KEY, "***") if LLM_API_KEY else value
+    return detail[:500]
+
+
+def _post_json(url: str, *, headers: dict[str, str], payload: dict[str, Any], timeout: float) -> dict[str, Any]:
+    """POST JSON without relying on third-party HTTP adapter registration.
+
+    Streamlit Cloud occasionally reports a requests adapter error even when the
+    configured HTTPS URL is valid. urllib is part of Python's standard library,
+    so it avoids that environment-specific adapter failure.
+    """
+    request = Request(
+        url,
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        headers=headers,
+        method="POST",
+    )
+    try:
+        with urlopen(request, timeout=timeout) as response:
+            raw = response.read().decode("utf-8")
+        data = json.loads(raw)
+    except HTTPError as exc:
+        try:
+            detail = exc.read().decode("utf-8", errors="replace")
+        except Exception:
+            detail = str(exc)
+        raise RuntimeError(f"HTTP {exc.code}: {_safe_error_detail(detail)}") from exc
+    except URLError as exc:
+        raise RuntimeError(f"网络连接失败：{_safe_error_detail(str(exc.reason))}") from exc
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("接口返回不是有效 JSON。") from exc
+    if not isinstance(data, dict):
+        raise RuntimeError("接口返回格式不是 JSON 对象。")
+    return data
+
+
 def _call_openai_compatible(messages: list[dict[str, Any]], temperature: float | None = None, model: str | None = None) -> str | None:
     profile = _active_profile()
     if profile.provider == "none":
@@ -131,17 +171,15 @@ def _call_openai_compatible(messages: list[dict[str, Any]], temperature: float |
         payload["reasoning_effort"] = LLM_REASONING_EFFORT or "high"
         payload["thinking"] = {"type": "enabled"}
     try:
-        r = requests.post(
+        data = _post_json(
             _chat_url(profile.base_url),
             headers=_headers(profile),
-            json=payload,
+            payload=payload,
             timeout=LLM_TIMEOUT_SECONDS,
         )
-        r.raise_for_status()
-        data = r.json()
         return data["choices"][0]["message"]["content"].strip()
     except Exception as exc:
-        return f"大模型接口调用失败，已降级为本地检索摘要。错误：{exc}"
+        return f"大模型接口调用失败，已降级为本地检索摘要。错误：{_safe_error_detail(str(exc))}"
 
 
 def _format_context(retrieved: list[dict[str, Any]]) -> str:
