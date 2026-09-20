@@ -1,0 +1,110 @@
+[
+  {
+    "query": "空压机排气温度高，冷却器和润滑油要检查什么？",
+    "device": "空压机",
+    "expected_keyword": "排气温度高",
+    "scenario": "温度告警"
+  },
+  {
+    "query": "GA75 空压机油分压差高，可能是什么原因？",
+    "device": "空压机",
+    "expected_keyword": "油分压差高",
+    "scenario": "压差异常"
+  },
+  {
+    "query": "空压机供气压力低，进气阀和管网泄漏如何排查？",
+    "device": "空压机",
+    "expected_keyword": "供气压力低",
+    "scenario": "压力不足"
+  },
+  {
+    "query": "离心泵振动大，联轴器和叶轮怎么排查？",
+    "device": "离心泵",
+    "expected_keyword": "振动异常",
+    "scenario": "机械振动"
+  },
+  {
+    "query": "离心泵机械密封连续滴漏，轴套和密封端面怎么处理？",
+    "device": "离心泵",
+    "expected_keyword": "机械密封泄漏",
+    "scenario": "泄漏"
+  },
+  {
+    "query": "离心泵汽蚀时入口压力和管路应如何检查？",
+    "device": "离心泵",
+    "expected_keyword": "汽蚀",
+    "scenario": "流体异常"
+  },
+  {
+    "query": "配电柜过载告警，三相电流和端子发热如何处理？",
+    "device": "配电柜",
+    "expected_keyword": "过载告警",
+    "scenario": "电气保护"
+  },
+  {
+    "query": "配电柜母排接头过热，红外测温后下一步是什么？",
+    "device": "配电柜",
+    "expected_keyword": "母排过热",
+    "scenario": "电气过热"
+  },
+  {
+    "query": "变频器启动时报 OC 过流，先看什么？",
+    "device": "变频器",
+    "expected_keyword": "OC 过流",
+    "scenario": "变频器告警"
+  },
+  {
+    "query": "变频器接地故障，输出电缆和电机绝缘怎么查？",
+    "device": "变频器",
+    "expected_keyword": "接地故障",
+    "scenario": "绝缘风险"
+  },
+  {
+    "query": "风机轴承温升偏高，润滑和同轴度如何检查？",
+    "device": "风机",
+    "expected_keyword": "轴承温升",
+    "scenario": "轴承状态"
+  },
+  {
+    "query": "风机叶轮积灰导致振动偏大，如何处理？",
+    "device": "风机",
+    "expected_keyword": "叶轮积灰",
+    "scenario": "动平衡"
+  },
+  {
+    "query": "电机绝缘电阻偏低，变频器接地故障怎么排查？",
+    "device": "电机",
+    "expected_keyword": "绝缘电阻偏低",
+    "scenario": "电机绝缘"
+  },
+  {
+    "query": "空压机油压偏低且轴承温度升高，应该先查什么？",
+    "device": "空压机",
+    "expected_keyword": "油压偏低",
+    "scenario": "润滑异常"
+  },
+  {
+    "query": "离心泵检修后联轴器异响振动升高，怎么处理？",
+    "device": "离心泵",
+    "expected_keyword": "联轴器不对中",
+    "scenario": "对中异常"
+  },
+  {
+    "query": "配电柜端子松动导致局部发热，停电后怎么处理？",
+    "device": "配电柜",
+    "expected_keyword": "端子松动",
+    "scenario": "端子发热"
+  },
+  {
+    "query": "风机启动阶段变频器过流，加速时间应该怎么核查？",
+    "device": "变频器",
+    "expected_keyword": "加速时间过短",
+    "scenario": "参数异常"
+  },
+  {
+    "query": "风机振动逐周上升，地脚螺栓松动如何排查？",
+    "device": "风机",
+    "expected_keyword": "地脚螺栓松动",
+    "scenario": "基础振动"
+  }
+]
